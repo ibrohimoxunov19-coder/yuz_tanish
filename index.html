@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yuz Tanish Tizimi v2</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <h1>🎭 Yuz Tanish Tizimi</h1>
+      <span class="model-status" id="modelStatus">⏳ Yuklanmoqda...</span>
+    </header>
+
+    <div class="card source-bar">
+      <div class="card-label">📷 Kamera manbasi</div>
+      <div class="source-row">
+        <label class="radio-btn">
+          <input type="radio" name="source" value="webcam" checked /> Kompyuter kamera
+        </label>
+        <label class="radio-btn">
+          <input type="radio" name="source" value="ipcam" /> 📱 IP Webcam (telefon)
+        </label>
+        <div class="ipcam-input" id="ipcamInput" style="display:none;">
+          <input type="text" id="ipUrl" placeholder="http://192.168.1.100:8080" />
+          <button class="btn btn-primary" id="connectIpBtn">Ulash</button>
+          <p class="ip-hint">📌 Telefon va kompyuter bir xil Wi-Fi da bo'lishi kerak</p>
+        </div>
+      </div>
+    </div>
+
+    <main class="main-grid">
+      <section class="camera-section">
+        <div class="video-wrap">
+          <video id="video" autoplay muted playsinline></video>
+          <img id="ipFrame" style="display:none; width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0;" />
+          <canvas id="overlay"></canvas>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="startBtn" disabled>📷 Kamerani yoqish</button>
+          <button class="btn" id="captureBtn" disabled>🔍 Tahlil qilish</button>
+          <button class="btn btn-danger" id="stopBtn" disabled>⏹ To'xtatish</button>
+        </div>
+
+        <div class="card voice-card">
+          <div class="card-label">🔊 Ovoz sozlamalari</div>
+          <div class="voice-row">
+            <label class="toggle-label">
+              <input type="checkbox" id="ttsEnabled" checked />
+              <span>Ovozli e'lon</span>
+            </label>
+            <div class="voice-select-wrap">
+              <label style="font-size:12px;color:var(--text-muted);">Til:</label>
+              <select id="voiceLang">
+                <option value="ru-RU">Русский</option>
+                <option value="en-US">English</option>
+                <option value="uz-UZ">O'zbek</option>
+              </select>
+            </div>
+            <div class="voice-select-wrap">
+              <label style="font-size:12px;color:var(--text-muted);">Tezlik:</label>
+              <input type="range" id="voiceRate" min="0.5" max="2" step="0.1" value="1" style="width:70px;" />
+              <span id="voiceRateVal" style="font-size:12px;min-width:24px;">1.0</span>
+            </div>
+          </div>
+          <button class="btn" id="testVoiceBtn" style="margin-top:8px;font-size:12px;">🔊 Sinab ko'rish</button>
+        </div>
+
+        <p class="status-msg" id="statusMsg">Modellar yuklanishini kuting...</p>
+      </section>
+
+      <section class="info-section">
+        <div class="card">
+          <div class="card-label">👤 Aniqlangan shaxs</div>
+          <div class="person-info">
+            <div class="avatar" id="personAvatar">?</div>
+            <div>
+              <div class="person-name" id="personName">—</div>
+              <div class="person-meta" id="personMeta"></div>
+              <div class="person-extra" id="personExtra"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">😊 Kayfiyat tahlili</div>
+          <div id="emotionBars"><p class="muted">Tahlil kutilmoqda...</p></div>
+          <div class="dominant-emotion" id="dominantEmotion"></div>
+        </div>
+
+        <div class="card" id="unknownCard" style="display:none;">
+          <div class="card-label">⚠️ Yangi shaxs — ma'lumot kiriting</div>
+          <div class="form-group">
+            <input type="text" id="newName" placeholder="Ism Familiya *" />
+            <input type="number" id="newAge" placeholder="Yosh" min="1" max="120" />
+            <input type="text" id="newJob" placeholder="Kasb / Lavozim" />
+            <input type="text" id="newDept" placeholder="Bo'lim / Guruh" />
+            <textarea id="newInfo" placeholder="Qo'shimcha ma'lumot" rows="2"></textarea>
+            <button class="btn btn-primary" id="saveBtn">💾 Bazaga saqlash</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <section class="card db-section">
+      <div class="db-header">
+        <div class="card-label">👥 Bazadagi shaxslar (<span id="dbCount">0</span>)</div>
+        <div class="db-actions">
+          <input type="text" id="searchInput" placeholder="Qidirish..." class="search-input" />
+          <button class="btn btn-danger-outline" id="clearDbBtn">🗑 Tozalash</button>
+        </div>
+      </div>
+      <div class="db-list" id="dbList"><p class="muted">Baza bo'sh</p></div>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.14/dist/face-api.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/emotion.js"></script>
+  <script src="js/tts.js"></script>
+  <script src="js/ipcam.js"></script>
+  <script src="js/camera.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
